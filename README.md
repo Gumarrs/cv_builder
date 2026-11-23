@@ -51,3 +51,7 @@ CV data is saved in the current browser using `localStorage` under `cv-builder:v
 ## Notes
 
 This is an MVP foundation. The builder supports the core data-entry and export flow; advanced features such as drag-and-drop ordering, photo cropping, detailed per-template PDF styling, and robust multi-page visual parity can be added in subsequent iterations. The Creative layout is currently represented in the live HTML preview; the PDF renderer uses a clean text-first layout for reliable selectable text.
+
+## Visual design update
+
+The interface uses a responsive, colorful visual system with violet, pink, teal, and warm accent tones. The landing page, template selection, and CV builder share the same design language. Layouts adapt for desktop, tablet, and mobile; the builder switches to Edit/Preview tabs on smaller screens.
