@@ -2,3 +2,12 @@
 body{background:#fafaff;color:#1e1b4b}
 :focus-visible{outline:2px solid #7c3aed;outline-offset:2px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+#print-root{display:none}
+@media print{
+  @page{size:A4;margin:12mm 0}
+  @page:first{margin:0}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  html,body{background:#fff!important;height:auto!important}
+  body>*:not(#print-root){display:none!important}
+  #print-root{display:block}
+}
