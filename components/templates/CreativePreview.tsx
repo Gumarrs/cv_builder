@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Photo } from "./Photo";
 import type { CV, SectionId } from "@/lib/types";
 import { dict, Lang } from "@/lib/i18n";
 import { active, initials, lines } from "@/lib/cvutils";
@@ -27,7 +28,7 @@ export default function CreativePreview({ cv, lang }: { cv: CV; lang: Lang }) {
     <div className="grid min-h-[841px] grid-cols-[190px_1fr] text-[9.5px] leading-[1.5] text-slate-700">
       <aside className="bg-gradient-to-b from-violet-600 via-indigo-600 to-blue-600 p-6 text-white">
         {cv.photo
-          ? <img src={cv.photo} alt="" className="mx-auto h-20 w-20 rounded-full border-4 border-pink-300 object-cover" />
+          ? <Photo cv={cv} base={80} imgClass="rounded-full border-4 border-pink-300" wrapClass="mx-auto" />
           : <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border-4 border-pink-300 bg-white/20 text-[26px] font-extrabold">{initials(cv.name)}</div>}
         {(cv.email || cv.phone || cv.location) && <><SH t={h.contact} /><p className="break-all">{cv.email}</p><p>{cv.phone}</p><p>{cv.location}</p></>}
         {active(cv, SIDE).map((id) => <div key={id}>{S[id]()}</div>)}

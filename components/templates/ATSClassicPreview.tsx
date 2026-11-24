@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Photo } from "./Photo";
 import type { CV, SectionId } from "@/lib/types";
 import { dict, Lang } from "@/lib/i18n";
 import { active, lines } from "@/lib/cvutils";
@@ -22,7 +23,7 @@ export default function ATSClassicPreview({ cv, lang }: { cv: CV; lang: Lang }) 
   return (
     <div className="min-h-[841px] px-11 py-10 font-serif text-[9.5px] leading-[1.5] text-black">
       <div className="relative text-center">
-        {cv.photo && <img src={cv.photo} alt="" className="absolute right-0 top-0 h-[70px] w-[70px] object-cover" />}
+        {cv.photo && <div className="absolute right-0 top-0"><Photo cv={cv} base={70} /></div>}
         <h1 className="text-[24px] font-bold tracking-wide">{cv.name || dict[lang].f.name}</h1>
         {cv.title && <p className="italic">{cv.title}</p>}
         <p className="mt-1">{[cv.email, cv.phone, cv.location].filter(Boolean).join(" | ")}</p>

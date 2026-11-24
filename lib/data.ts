@@ -1,9 +1,9 @@
 import type { CV, TemplateId } from "./types";
 import type { Lang } from "./i18n";
 export const uid = () => Math.random().toString(36).slice(2, 10);
-export const templateIds: TemplateId[] = ["classic", "modern", "creative"];
+export const templateIds: TemplateId[] = ["classic", "modern", "creative", "executive", "elegant", "bold"];
 export const emptyCV: CV = {
-  photo: "", name: "", title: "", email: "", phone: "", location: "", summary: "",
+  photo: "", photoBox: { dx: 0, dy: 0, scale: 1 }, name: "", title: "", email: "", phone: "", location: "", summary: "",
   links: [], education: [], work: [], org: [], skills: [], projects: [], refs: [],
   sections: (["summary", "links", "education", "work", "org", "skills", "projects", "refs"] as const).map((id) => ({ id, visible: true })),
 };

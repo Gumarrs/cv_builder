@@ -89,7 +89,7 @@ export default function Builder() {
     switch (id) {
       case "personal": return (
         <div className="grid gap-3 sm:grid-cols-2">
-          <div className="sm:col-span-2"><PhotoUpload photo={cv.photo} onChange={(v) => set("photo", v)} t={t} /></div>
+          <div className="sm:col-span-2"><PhotoUpload photo={cv.photo} onChange={(v) => set("photo", v)} box={cv.photoBox} onBox={(b) => set("photoBox", b)} t={t} /></div>
           <Field label={t.f.name} value={cv.name} onChange={(v) => set("name", v)} error={err("name")} />
           <Field label={t.f.title} value={cv.title} onChange={(v) => set("title", v)} />
           <Field label={t.f.email} type="email" value={cv.email} onChange={(v) => set("email", v)} error={err("email")} />
@@ -154,8 +154,8 @@ export default function Builder() {
 
         <main className={`min-h-0 flex-col bg-slate-100 ${tab === "preview" ? "flex" : "hidden"} md:flex`}>
           <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-slate-200 bg-white px-4 py-2.5">
-            <div className="flex rounded-full bg-slate-100 p-1 text-xs font-semibold">
-              {templateIds.map((id) => <button key={id} onClick={() => setTemplate(id)} aria-pressed={template === id} className={`rounded-full px-3 py-1.5 transition ${template === id ? "bg-violet-600 text-white" : "text-slate-500 hover:text-violet-600"}`}>{t.tpls[id].name}</button>)}
+            <div className="flex max-w-full overflow-x-auto rounded-full bg-slate-100 p-1 text-xs font-semibold">
+              {templateIds.map((id) => <button key={id} onClick={() => setTemplate(id)} aria-pressed={template === id} className={`shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 transition ${template === id ? "bg-violet-600 text-white" : "text-slate-500 hover:text-violet-600"}`}>{t.tpls[id].name}</button>)}
             </div>
             <div className="flex items-center gap-1 text-sm font-semibold">
               <button aria-label={t.b.zoomOut} onClick={() => setZoom((z) => Math.max(0.4, +(z - 0.1).toFixed(2)))} className="rounded-lg p-1.5 hover:bg-slate-100"><Minus size={16} /></button>
@@ -164,7 +164,7 @@ export default function Builder() {
               <button onClick={download} className="ml-2 flex items-center gap-1.5 rounded-full bg-gradient-to-r from-violet-600 to-pink-500 px-3 py-1.5 text-white sm:hidden"><Download size={14} />PDF</button>
             </div>
           </div>
-          <div className="flex-1 overflow-auto p-6"><div className="mx-auto w-fit"><FlowPaper id={template} scale={zoom} cv={cv} lang={lang} /></div></div>
+          <div className="flex-1 overflow-auto p-6"><div className="mx-auto w-fit"><FlowPaper id={template} scale={zoom} cv={cv} lang={lang} onPhotoChange={(b) => set("photoBox", b)} /></div></div>
         </main>
       </div>
 

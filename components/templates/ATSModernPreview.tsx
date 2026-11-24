@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Photo } from "./Photo";
 import type { CV, SectionId } from "@/lib/types";
 import { dict, Lang } from "@/lib/i18n";
 import { active, lines } from "@/lib/cvutils";
@@ -30,7 +31,7 @@ export default function ATSModernPreview({ cv, lang }: { cv: CV; lang: Lang }) {
           {cv.title && <p className="mt-1 text-[12px] text-indigo-100">{cv.title}</p>}
           <p className="mt-2 text-[9px] text-indigo-100">{[cv.email, cv.phone, cv.location].filter(Boolean).join(" · ")}</p>
         </div>
-        {cv.photo && <img src={cv.photo} alt="" className="h-16 w-16 rounded-full border-2 border-white/60 object-cover" />}
+        {cv.photo && <Photo cv={cv} base={64} imgClass="rounded-full border-2 border-white/60" />}
       </div>
       <div className="grid grid-cols-[1fr_150px] gap-6 px-9 pb-8 pt-1">
         <div>{active(cv, MAIN).map((id) => <div key={id}>{S[id]()}</div>)}</div>

@@ -1,3 +1,5 @@
 {
-  "/builder/page": "app/builder/page.js"
+  "/builder/page": "app/builder/page.js",
+  "/templates/page": "app/templates/page.js",
+  "/page": "app/page.js"
 }

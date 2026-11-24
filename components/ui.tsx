@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Plus, Trash2, UploadCloud } from "lucide-react";
 import type { Dict } from "@/lib/i18n";
+import type { PhotoBox } from "@/lib/types";
 const base = "w-full rounded-xl border bg-white px-3 py-2 text-sm outline-none transition focus:ring-4";
 export function Field({ label, value, onChange, area, error, className = "", type = "text" }: { label: string; value: string; onChange: (v: string) => void; area?: boolean; error?: string; className?: string; type?: string }) {
   const cls = `${base} ${error ? "border-rose-400 focus:border-rose-400 focus:ring-rose-100" : "border-slate-200 focus:border-violet-400 focus:ring-violet-100"}`;
@@ -29,7 +30,7 @@ export const EmptyState = ({ text, action, onClick }: { text: string; action: st
     <p className="mb-3 text-sm text-slate-600">{text}</p><AddButton label={action} onClick={onClick} />
   </div>
 );
-export function PhotoUpload({ photo, onChange, t }: { photo: string; onChange: (v: string) => void; t: Dict }) {
+export function PhotoUpload({ photo, onChange, box, onBox, t }: { photo: string; onChange: (v: string) => void; box: PhotoBox; onBox: (b: PhotoBox) => void; t: Dict }) {
   const [err, setErr] = useState("");
   const pick = (f?: File) => {
     if (!f) return;
@@ -54,6 +55,10 @@ export function PhotoUpload({ photo, onChange, t }: { photo: string; onChange: (
           {photo && <button type="button" onClick={() => onChange("")} className="font-medium text-rose-500 hover:underline">{t.b.removePhoto}</button>}
         </div>
         <p className={`text-xs ${err ? "font-medium text-rose-500" : "text-slate-500"}`}>{err || t.b.uploadHint}</p>
+        {photo && <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-600">
+          <label className="flex items-center gap-2 font-semibold">{t.b.photoSize}<input type="range" min={0.4} max={3} step={0.05} value={box.scale} onChange={(e) => onBox({ ...box, scale: +e.target.value })} className="w-28 accent-violet-600" /></label>
+          <button type="button" onClick={() => onBox({ dx: 0, dy: 0, scale: 1 })} className="font-semibold text-violet-700 hover:underline">{t.b.photoReset}</button></div>}
+        {photo && <p className="mt-1 text-xs text-slate-500">{t.b.photoDrag}</p>}
       </div>
     </div>
   );
