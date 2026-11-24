@@ -2,18 +2,18 @@
 import { ReactNode, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { User, FileText, Link2, GraduationCap, Briefcase, Users, Wrench, FolderGit2, BadgeCheck, ChevronDown, ChevronUp, Download, Minus, Plus, ArrowLeft, Eye, EyeOff, RotateCcw, Check, X } from "lucide-react";
+import { User, FileText, Link2, GraduationCap, Briefcase, Users, Wrench, FolderGit2, BadgeCheck, ChevronDown, ChevronUp, Download, Minus, Plus, ArrowLeft, Eye, EyeOff, RotateCcw, Check, X, Type } from "lucide-react";
 import { FlowPaper, previewById } from "@/components/templates";
 import { Field, AddButton, Entry, PhotoUpload, EmptyState } from "@/components/ui";
 import { LangSwitch, useLang } from "@/lib/lang";
 import { useCVStore } from "@/lib/store";
 import { templateIds, uid } from "@/lib/data";
 import { validate } from "@/lib/cvutils";
-import type { CV, SectionId } from "@/lib/types";
+import type { CV, FontKey, SectionId } from "@/lib/types";
 import type { Dict } from "@/lib/i18n";
 
 type SecKey = "personal" | SectionId;
-const icons: Record<SecKey, typeof User> = { personal: User, summary: FileText, links: Link2, education: GraduationCap, work: Briefcase, org: Users, skills: Wrench, projects: FolderGit2, refs: BadgeCheck };
+const icons: Record<SecKey, typeof User> = { personal: User, summary: FileText, education: GraduationCap, work: Briefcase, org: Users, skills: Wrench, projects: FolderGit2, refs: BadgeCheck };
 const iconBtn = "grid h-8 w-8 place-items-center rounded-lg text-slate-500 transition hover:bg-violet-50 hover:text-violet-700 disabled:opacity-30 disabled:hover:bg-transparent";
 
 function List<T extends { id: string }>({ items, onChange, make, title, t, children }: { items: T[]; onChange: (v: T[]) => void; make: () => T; title: string; t: Dict; children: (it: T, patch: (p: Partial<T>) => void) => ReactNode }) {
@@ -77,7 +77,7 @@ export default function Builder() {
   const download = () => {
     setAttempted(true);
     const keys = Object.keys(errs);
-    if (keys.length) { goto(keys[0].startsWith("link:") ? "links" : "personal"); setNotice(t.b.fixErrors); return; }
+    if (keys.length) { goto("personal"); setNotice(t.b.fixErrors); return; }
     const old = document.title; document.title = `${cv.name.trim()} - CV`;
     const restore = () => { document.title = old; window.removeEventListener("afterprint", restore); };
     window.addEventListener("afterprint", restore);
@@ -95,9 +95,12 @@ export default function Builder() {
           <Field label={t.f.email} type="email" value={cv.email} onChange={(v) => set("email", v)} error={err("email")} />
           <Field label={t.f.phone} type="tel" value={cv.phone} onChange={(v) => set("phone", v)} error={err("phone")} />
           <Field label={t.f.location} value={cv.location} onChange={(v) => set("location", v)} className="sm:col-span-2" />
+          <div className="sm:col-span-2">
+            <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">{t.sec.links.f}</p>
+            <List items={cv.links} onChange={(v) => set("links", v)} make={() => ({ id: uid(), label: "", url: "" })} title={t.entry.links} t={t}>{(it, p) => <><Field label={t.f.label} value={it.label} onChange={(label) => p({ label })} /><Field label={t.f.url} value={it.url} onChange={(url) => p({ url })} error={err("link:" + it.id)} /></>}</List>
+          </div>
         </div>);
       case "summary": return <Field label={t.f.summary} area value={cv.summary} onChange={(v) => set("summary", v)} />;
-      case "links": return <List items={cv.links} onChange={(v) => set("links", v)} make={() => ({ id: uid(), label: "", url: "" })} title={t.entry.links} t={t}>{(it, p) => <><Field label={t.f.label} value={it.label} onChange={(label) => p({ label })} /><Field label={t.f.url} value={it.url} onChange={(url) => p({ url })} error={err("link:" + it.id)} /></>}</List>;
       case "education": return <List items={cv.education} onChange={(v) => set("education", v)} make={() => ({ id: uid(), school: "", degree: "", period: "" })} title={t.entry.education} t={t}>{(it, p) => <><Field label={t.f.school} value={it.school} onChange={(school) => p({ school })} /><Field label={t.f.degree} value={it.degree} onChange={(degree) => p({ degree })} /><Field label={t.f.period} value={it.period} onChange={(period) => p({ period })} className="sm:col-span-2" /></>}</List>;
       case "work": return <List items={cv.work} onChange={(v) => set("work", v)} make={() => ({ id: uid(), role: "", org: "", period: "", points: "" })} title={t.entry.work} t={t}>{(it, p) => <><Field label={t.f.role} value={it.role} onChange={(role) => p({ role })} /><Field label={t.f.company} value={it.org} onChange={(org) => p({ org })} /><Field label={t.f.period} value={it.period} onChange={(period) => p({ period })} className="sm:col-span-2" /><Field label={t.f.points} area value={it.points} onChange={(points) => p({ points })} className="sm:col-span-2" /></>}</List>;
       case "org": return <List items={cv.org} onChange={(v) => set("org", v)} make={() => ({ id: uid(), name: "", role: "", period: "" })} title={t.entry.org} t={t}>{(it, p) => <><Field label={t.f.orgName} value={it.name} onChange={(name) => p({ name })} /><Field label={t.f.role} value={it.role} onChange={(role) => p({ role })} /><Field label={t.f.period} value={it.period} onChange={(period) => p({ period })} className="sm:col-span-2" /></>}</List>;
@@ -158,6 +161,9 @@ export default function Builder() {
               {templateIds.map((id) => <button key={id} onClick={() => setTemplate(id)} aria-pressed={template === id} className={`shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 transition ${template === id ? "bg-violet-600 text-white" : "text-slate-500 hover:text-violet-600"}`}>{t.tpls[id].name}</button>)}
             </div>
             <div className="flex items-center gap-1 text-sm font-semibold">
+              <label className="mr-2 flex items-center gap-1 text-xs text-slate-500"><Type size={14} /><span className="sr-only">{t.b.font}</span>
+                <select value={cv.font} onChange={(e) => set("font", e.target.value as FontKey)} className="rounded-full border border-slate-200 bg-white py-1.5 pl-2 pr-5 text-xs font-semibold text-slate-700 outline-none focus:border-violet-400">
+                  <option value="default">{t.b.fontDefault}</option><option value="poppins">Poppins</option><option value="inter">Inter</option></select></label>
               <button aria-label={t.b.zoomOut} onClick={() => setZoom((z) => Math.max(0.4, +(z - 0.1).toFixed(2)))} className="rounded-lg p-1.5 hover:bg-slate-100"><Minus size={16} /></button>
               <span className="w-12 text-center">{Math.round(zoom * 100)}%</span>
               <button aria-label={t.b.zoomIn} onClick={() => setZoom((z) => Math.min(1.3, +(z + 0.1).toFixed(2)))} className="rounded-lg p-1.5 hover:bg-slate-100"><Plus size={16} /></button>

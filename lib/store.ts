@@ -11,7 +11,11 @@ export function useCVStore() {
   const [ready, setReady] = useState(false);
   useEffect(() => {
     let c: CV | null = null; let t: unknown = null;
-    try { const raw = localStorage.getItem(KEY); if (raw) { const d = JSON.parse(raw); if (d?.cv) c = { ...emptyCV, ...d.cv }; t = d?.template; } } catch {}
+    try { const raw = localStorage.getItem(KEY); if (raw) { const d = JSON.parse(raw); if (d?.cv) {
+        c = { ...emptyCV, ...d.cv };
+        const kept = (d.cv.sections ?? []).filter((x: { id: string }) => emptyCV.sections.some((s) => s.id === x.id));
+        c!.sections = [...kept, ...emptyCV.sections.filter((s) => !kept.some((k: { id: string }) => k.id === s.id))];
+      } t = d?.template; } } catch {}
     const q = new URLSearchParams(window.location.search).get("template");
     if (isTpl(q)) t = q;
     setCv(c ?? getSample(readLang()));
