@@ -21,6 +21,8 @@ const en = {
     { t: "Fill in your details", d: "Add experience, education, and skills section by section." },
     { t: "Download your CV", d: "Export a PDF and send it with confidence." } ] },
   ctaTitle: "Your next role starts with a better CV.",
+  landing: { stats: [{ n: 6, s: "", l: "Templates" }, { n: 2, s: "", l: "Languages" }, { n: 9, s: "", l: "CV sections" }, { n: 100, s: "%", l: "Stays on your device" }],
+    chips: ["ATS-friendly", "A4 PDF", "EN / ID"], tplSub: "Hover to pause. Click one to start building.", ctaSub: "Free, no sign-up, and your CV data never leaves your browser.", tplKicker: "Templates", featKicker: "Features", stepsKicker: "How it works" },
   foot: "© 2026 Kerja CV. All rights reserved.",
   pick: { title: "Choose your template", sub: "You can switch anytime in the builder. Your content stays.", back: "Back to home", select: "Select Template" },
   tpls: {
@@ -57,6 +59,8 @@ const id: Dict = {
     { t: "Isi datamu", d: "Tambahkan pengalaman, pendidikan, dan keahlian bagian demi bagian." },
     { t: "Unduh CV", d: "Ekspor PDF dan kirim dengan percaya diri." } ] },
   ctaTitle: "Peran berikutnya dimulai dari CV yang lebih baik.",
+  landing: { stats: [{ n: 6, s: "", l: "Template" }, { n: 2, s: "", l: "Bahasa" }, { n: 9, s: "", l: "Bagian CV" }, { n: 100, s: "%", l: "Tetap di perangkatmu" }],
+    chips: ["Ramah ATS", "PDF A4", "EN / ID"], tplSub: "Arahkan kursor untuk menjeda. Klik salah satu untuk mulai membuat.", ctaSub: "Gratis, tanpa daftar, dan data CV-mu tidak pernah keluar dari browser.", tplKicker: "Template", featKicker: "Fitur", stepsKicker: "Cara kerja" },
   foot: "© 2026 Kerja CV. Hak cipta dilindungi.",
   pick: { title: "Pilih template", sub: "Kamu bisa menggantinya kapan saja di builder. Isi CV tetap aman.", back: "Kembali ke beranda", select: "Pilih Template" },
   tpls: {
